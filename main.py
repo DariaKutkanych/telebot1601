@@ -9,12 +9,12 @@ bot = TeleBot("1007314497:AAHvjuAFIIN0GpUOevA3HturouG_tyS2hQ0")
 @bot.message_handler()
 def handle_massage(message):
 
-    result = requests.get(f"http://api.urbandictionary.com/v0/define?term={message.text}").json()
+    result = requests.get(f"http://api.urbandictionary.com/v0/"
+                          f"define?term={message.text}").json()
     total = "\n".join(n["definition"] for n in result["list"])
     # bot.send_message(message.chat.id, f'{total}')
 
     words = re.findall(r"[^[]*\[([^]]*)\]", total)
-
 
     markup = types.ReplyKeyboardMarkup()
     listy = []
@@ -32,11 +32,9 @@ def handle_massage(message):
                     markup.row(listy[a])
         continue
 
-
-    bot.send_message(message.chat.id, f"{total} \n Choose one word:", reply_markup=markup)
-
-
+    bot.send_message(message.chat.id, f"{total} \n Choose one word:",
+                     reply_markup=markup)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     bot.polling()
